@@ -1,0 +1,20 @@
+package Practice;
+import java.util.Scanner;
+
+public class Multiplication {
+  public static void main(String[] args){
+    Scanner Multiple = new Scanner(System.in);
+
+    System.out.print("Enter a number to multiply until 10: ");
+    int num = Multiple.nextInt();
+
+    int j = 0;
+
+    while (j <= 10 ) {
+      System.out.println(num + " x " + j + " = " + (num * j));
+      j++;
+    }
+
+    Multiple.close();
+  }
+}
