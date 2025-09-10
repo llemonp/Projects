@@ -1,0 +1,66 @@
+package Practice;
+import java.io.*;
+import java.util.Scanner;
+
+// BufferedReader is faster than FileReader because it reads larger chunks of data at a time, BufferWriter is also the same with FileWriter
+
+/* How do we know which one to use?:
+* BufferedReader - reading from the file (input)
+* BufferedWriter - writing to the file (output)
+* 
+* File I/O behave similarly to Scanner and System.out
+* Scanner - reads input from the user (input)
+*   - it also has methods and you need to close it when done
+* 
+* System.out - prints output to the console (output)
+*/
+
+public class Notesapp {
+  public static void main(String[] args) {
+    Scanner User = new Scanner(System.in);
+    System.out.println("Would you like to read or write notes? (r/w): " );
+    String choice = User.nextLine();
+  
+    if (choice.equals("r")) { // READ option
+      try {
+      BufferedReader notesR = new BufferedReader(new FileReader("Reading.txt"));
+  
+      String line;
+      while((line = notesR.readLine()) != null) { // program reads through the program until it reaches the end of the file
+        System.out.println(line); // prints each read line
+      }
+  
+      notesR.close();
+  
+      } catch (IOException e) {
+        System.out.println("Something went wrong with file access: " + e.getMessage()); // error message if file not found
+        // e.getMessage() automatically provides a description of the error
+      }
+    } else if(choice.equals("w")) { // WRITE option
+      try {
+        BufferedWriter notesW = new BufferedWriter(new FileWriter("Writing.txt"));
+  
+        System.out.println("Enter your notes: ");
+        String notes = User.nextLine();
+        notesW.write(notes); // writes user's notes to the file
+        notesW.newLine(); // adds a new line after writing the notes
+        notesW.close();
+        System.out.println("Notes saved!");
+      } catch (IOException e) {
+        System.out.println("Something went wrong with file access: " + e.getMessage());
+      }
+  
+      User.close();
+  
+      /* ALL READING METHODS
+       * readLine() - reads a line of text
+       * read() - reads one character at a time
+       * read(char[] buffer, int off, int len) - reads a portion of an array, say 5 chars at a time
+       * skip(n) - skips a portion of the file
+       * mark(int readAheadLimit) - marks a position in the file to return to later
+       * reset() - returns to the marked position
+       * ready() - checks if there is more data to read
+      */
+    }
+  }
+}
