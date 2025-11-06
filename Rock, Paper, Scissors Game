@@ -1,0 +1,219 @@
+<!--
+
+- We have to wrap hmtl elements between opening and closing tags
+- Multiple spaces and new lines are shown as ONE space
+
+html attributes: What we a
+- (title =" you found me ") appears when you hover over that button
+
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rocki Papee Scissi</title> <!-- Title of the webpage -->
+        <link 
+        /* changes appearances of ALL elements on our website */
+        body {
+          background-color: rgb(25, 25, 25);
+          color: white;
+          font-family: Arial;
+        }
+        
+        .title {
+          font-size: 30px;
+          font-weight: bold;
+        }
+        
+        .move-icon {
+          height: 50px;
+          width: 50px;
+        }
+        
+        .move-button {
+          background-color: transparent;
+          border: 3px solid white;
+          width: 120px;
+          height: 120px;
+        
+          border-radius: 60px; /* to make it round: set to half of width or height */
+          margin-right: 10px; 
+        
+        }
+        
+        .result {
+          font-size: 25px;
+          font-weight: bold;
+          margin-top: 50px;
+        }
+        
+        .score {
+          margin-top: 70px;
+        }
+        
+        .reset-button,
+        .auto-play-button
+        {
+          background-color: white;
+          border: none;
+          padding: 5px 10px;
+          font-size: 15px;
+        
+          cursor: pointer;
+        }
+
+        <!--html elements-->
+    </head>
+    <body>
+        <p class="title">Rock Paper Scissors</p>
+
+        <button onclick="
+          playGame('rock');
+
+        " class="move-button"><img src="images/rock-emoji.png" class="move-icon"></button>
+
+        <button onclick="
+          playGame('paper');
+
+        " class="move-button"><img src="images/paper-emoji.png" class="move-icon"></button>
+        
+        <button onclick="
+          playGame('scissors');
+
+        " class="move-button"><img src="images/scissors-emoji.png" class="move-icon"></button>
+
+        <p class = "js-result result"></p>
+        <p class = "js-moves"></p>
+        <p class = "js-score score"></p>
+
+        <button onclick="
+        score.wins = 0;
+        score.losses = 0;
+        score.ties = 0;
+        localStorage.removeItem('score');
+        updateScoreElement();
+        " class="reset-button">Reset Score</button>
+
+        <button class = "auto-play-button" onclick="
+          autoPlay();
+        ">Auto Play</button>
+
+        <script
+          // Gets the message from localStorage
+          let score = JSON.parse(localStorage.getItem('score')) || {
+              wins: 0,
+              losses: 0,
+              ties: 0
+            };
+          
+            updateScoreElement();
+          
+          
+          // This is the longer way to write the above line
+          /*if (!score) {
+            score = {
+              wins: 0,
+              losses: 0,
+              ties: 0
+            };
+          }*/
+          let isAutoPlaying = false;
+          let intervalid;
+          
+          function autoPlay() {
+            if (!isAutoPlaying) {
+              intervalid = setInterval(function() {
+              const playerMove = pickComputerMove();
+              playGame(playerMove);
+            }, 1000);
+            isAutoPlaying = true;
+            } else {
+              clearInterval(intervalid);
+              isAutoPlaying = false;
+            }
+          }
+          
+          function playGame(playerMove) {
+            // we can name computerMove the same as the let variable in the function bc it is outside the function scope
+            const computerMove = pickComputerMove();
+          
+            let result = '';
+            
+            // make sure strings are the same when you are using them to compare
+            if( playerMove === 'scissors') {
+              if(computerMove === 'rock'){
+                result = 'You lose';
+              } else if(computerMove === 'paper') {
+                result = 'You win! ';
+              } else if(computerMove === 'scissors'){
+                result = 'You tie'
+              }
+              
+            } else if ( playerMove === 'paper'){
+              if(computerMove === 'rock'){
+                result = 'You win! ';
+              } else if(computerMove === 'paper') {
+                result = 'You tie';
+              } else if(computerMove === 'scissors'){
+                result = 'You lose'
+              }
+          
+            } else if ( playerMove === 'rock') {
+              if(computerMove === 'rock'){
+                result = 'You tie';
+              } else if(computerMove === 'paper') {
+                result = 'You lose';
+              } else if(computerMove === 'scissors'){
+                result = 'You win! '
+              }
+            }
+          
+            // updates the button to add one every time you win, lose, or tie
+            if (result === 'You win! ') {
+              score.wins += 1;
+            } else if (result === 'You lose') {
+              score.losses += 1;
+            } else if (result === 'You tie') {
+              score.ties += 1;
+            }
+          
+            // we use localStorage to save score so it doesn't reset when we refresh the page
+            localStorage.setItem('score', JSON.stringify(score));
+          
+            updateScoreElement();
+          
+            document.querySelector('.js-result').innerHTML = result;
+          
+            document.querySelector('.js-moves').innerHTML = 
+            `You
+              <img src="images/${playerMove}-emoji.png"
+              class="move-icon">
+              <img src="images/${computerMove}-emoji.png"
+              class="move-icon">
+            Computer`;
+          }
+          
+          function updateScoreElement() {
+            document.querySelector('.js-score') // shows score on the page
+              .innerHTML = `Wins: ${score.wins}, losses ${score.losses}, ties: ${score.ties}`;
+          }
+          
+          
+          function pickComputerMove() {
+            const randomNumber = Math.random();
+            let computerMove = '';
+          
+            if(randomNumber >= 0 && randomNumber < (1/3)){
+              computerMove = 'rock';
+            } else if(randomNumber >= (1/3) && randomNumber < (2/3)) {
+              computerMove = 'paper';
+            } else if(randomNumber >= (2/3) && randomNumber < 1){
+              computerMove = 'scissors';
+            }
+          
+            // return gets a value out of a function
+            return computerMove;
+          }
+        </script>
+    </body>
+</html>
