@@ -1,0 +1,32 @@
+package Practice;
+import java.util.Scanner;
+
+public class divideThree {
+  public static void main(String[] args){
+    Scanner Three = new Scanner(System.in);
+    
+    // first number
+    System.out.println("Enter in the first number: ");
+    int firstNum = Three.nextInt();
+
+    // second number
+    System.out.println("Enter in the second number: ");
+    int secondNum = Three.nextInt();
+
+    // third number
+    System.out.println("Enter in the third number: ");
+    int thirdNum = Three.nextInt();
+
+    int product = (firstNum * secondNum * thirdNum);
+    int sum = (firstNum + secondNum + thirdNum);
+    int Avg = sum/3;
+
+    System.out.println("Entered 3 numbers: " + firstNum + "," + secondNum + "," + thirdNum);
+    System.out.println("Sum: " + sum);
+    System.out.println("Product: " + product);
+    System.out.println("Average: " + Avg);
+
+    Three.close();
+  }
+  
+}
