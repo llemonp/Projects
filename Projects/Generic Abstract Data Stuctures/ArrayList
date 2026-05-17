@@ -1,0 +1,417 @@
+/**
+ * ArrayList.java
+ * 
+ * Description: The ArrayList class is a linked-list based data structure that stores Objects in sequential order using nodes and pointers. This is a class that holds the generic T.
+ * 
+ * PRE: None
+ * POST: None
+ * 
+ * @author Katie Chau
+ * @version February 2026
+ */
+public class ArrayList <T>{
+  // inner class node
+  private class Node{
+    T data;
+    Node link;
+
+    public Node(T p, Node n){
+      this.data = p;
+      this.link = n;
+    }
+  }
+
+  private Node head;
+
+  /**
+   * insert
+   * 
+   * Description: This method will insert an Object at the specified index.
+   * 
+   * PRE: Index >= 0 
+   * POST: An Object will be inserted at the specified index. Otherwise, we will return early and list remains unchanged.
+   * 
+   * @param newData
+   * @param index
+   */
+  public void insert(T newData, int index){
+    if(index < 0){
+      System.out.println("Index cannot be a negative value.");
+      return;
+    }
+
+    Node newNode = new Node(newData, null);
+
+    // case 1: insert and reassign the head
+    if(index == 0){
+      head = new Node(newData, head);
+      return;
+    }
+
+    if(head == null ){
+      System.out.println("Current index out of bounds: " + index);
+      return;
+    }
+
+    Node current = head;
+    int i = 0;
+
+    // move through node and stop 1 before the target index
+    while(current.link != null && i < index - 1){
+      current = current.link;
+      i++;
+    }
+
+    if(i < index - 1){
+      System.out.println("Current index out of bounds: " + index);
+      return;
+    }
+
+    // inserting our object
+    newNode.link = current.link;
+    current.link = newNode;
+  }
+
+
+  // two new add methods for class excercise
+  public void add(T newData, int index){
+    insert(newData, index);
+  }
+  public void add(T newData){
+    insert(newData, size());
+  }
+
+
+  /**
+   * remove
+   * 
+   * Description: This method will remove whatever Object is at the specified index.
+   * 
+   * PRE: Index >= 0
+   * POST: The Object of the index will be removed and returned. Otherwise, return null and list remains unchanged.
+   * 
+   * @param index the index we want removed.
+   * @return the Object we delete.
+   */
+  public T remove(int index){
+    if(index < 0){
+      System.out.println("Index cannot be a negative value.");
+      return null;
+    }
+
+    // deleting empty list
+    if(head == null){
+      System.out.println("We cannot delete from an empty list");
+      return null;
+    }
+
+    // deleting the head only
+    if(index == 0){
+      T deletedData = head.data;
+      head = head.link;
+      return deletedData;
+    }
+
+    Node current = head;
+    int i = 0;
+
+    // move through node and stop 1 before the target index
+    while(current.link != null && i < index - 1){
+      current = current.link;
+      i++;
+    }
+
+    if(current.link == null){
+      System.out.println("No more nodes to remove at index: " + index);
+      return null;
+    }
+
+    T deletedData = current.link.data;
+    current.link = current.link.link; // goes to the next next node
+    return deletedData;
+  }
+
+  /**
+   * append
+   * 
+   * Description: This method will append a new object to the end of our list.
+   * 
+   * PRE: None
+   * POST: The following Object will be appended into our list. Otherwise, we will return early and list remains unchanged.
+   * 
+   * @param newData the Object we want to append.
+   */
+  public void append(T newData){
+    Node current = head;
+
+    if(current == null){
+      head = new Node(newData, null);
+      return;
+    }
+
+    // moving to the end before null
+    while(current.link != null){
+      current = current.link;
+    }
+
+    current.link = new Node(newData, null);
+  }
+
+  /**
+   * delete
+   * 
+   * Description: This method will delete at the specified index.
+   * 
+   * PRE: Index >= 0 and index is not out of bounds.
+   * POST: The specified index will be deleted. Otherwise, we will return early and list remains unchanged.
+   * 
+   * @param index the index we want deleted.
+   */
+  public void delete(int index){
+    Node current = head;
+
+    if(index < 0){
+      System.out.println("Index cannot be a negative value");
+      return;
+    }
+
+    if(head == null){
+      System.out.println("This list is empty.");
+      return;
+    }
+
+    // deleting the head
+    if(index == 0){
+      head = head.link;
+      return;
+    }
+
+    // move through node and stop 1 before the target index
+    int i = 0;
+    while(current.link != null && i < index - 1){
+      current = current.link;
+      i++;
+    }
+
+    // checking if we are out of bounds
+    if(current.link == null){
+      System.out.println("Current index out of bounds: " + index);
+      return;
+    }
+
+    // deleting the index
+    current.link = current.link.link;
+  }
+
+  /**
+   * get
+   * 
+   * Description: This method will get the Object at the specified index.
+   * 
+   * PRE: index >= 0
+   * POST: The Object at the specified index will be returned. Otherwise, we will return null and list remains unchanged.
+   * 
+   * @param index the index we want to get.
+   * @return Object will be a data in our list.
+   */
+  public Object get(int index){
+    if(index < 0){
+      System.out.println("Index cannot be a negative number");
+      return null;
+    }
+
+    if(head == null){
+      System.out.println("This list is empty");
+      return null;
+    }
+
+    Node current = head;
+    int i = 0;
+
+    while(current != null && i < index){
+      current = current.link;
+      i++;
+    }
+
+    // checking if we are out of bounds
+    if(current == null){
+      System.out.println("Current index out of bounds: " + index);
+      return null;
+    }
+
+    // returning the object at the index
+    Object getData = current.data;
+    return getData;
+  }
+
+  public int size(){
+    Node current = head;
+    int count = 0;
+
+    while(current != null){
+      current = current.link;
+      count++;
+    }
+
+    return count;
+  }
+
+  /**
+   * toString
+   * 
+   * Description: This method returns a string of all the data members inside out list.
+   * 
+   * PRE: None
+   * POST: None
+   * 
+   * @return String the concatenated string of our list.
+   */
+  public String toString(){
+    Node current = head;
+
+    // start of string
+    String result = "";
+
+    while(current != null){
+      result += current.data;
+      // move to next node if it is not null
+      if(current.link != null){
+        result += ", ";
+      }
+      current = current.link;
+    }
+
+    // end and return string
+    return result;
+  }
+
+  /**
+   * isEmpty
+   * 
+   * Description: This method checks if our list is empty
+   * 
+   * PRE: None
+   * POST: None
+   * 
+   * @return a boolean true if the list is empty. Otherwise, return false.
+   */
+  public boolean isEmpty(){
+    return head == null;
+  }
+
+  /**
+   * indexOf
+   * 
+   * Description: This method will return the idex of our target.
+   * 
+   * PRE: A valid target.
+   * POST: The index of our target is returned. Otherwise, return -1 if it cannot be found.
+   * 
+   * @return int the index of our target.
+   */
+  public int indexOf(T target){
+    Node current = head;
+    int index = 0;
+
+    while(current != null){
+      if(current.data == null){
+        if(target == null){
+          return index;
+        }
+      } else if(current.data.equals(target)){
+        return index;
+      }
+
+      current = current.link;
+      index++;
+    }
+
+    // if the target could not be found
+    return -1;
+  }
+
+  /**
+   * equals
+   * 
+   * Description: This method will check if two lists contain the same data members.
+   * 
+   * PRE: None
+   * POST: A boolean will be returned.
+   * 
+   * @return boolean true if they are equal. Otherwise, return false.
+   */
+  public boolean equals(Object other){
+    if(!(other instanceof ArrayList)){
+      return false;
+    }
+
+    ArrayList otherQuack = (ArrayList) other;
+    Node current = head;
+    Node otherCurrent = otherQuack.head;
+
+    while(current != null && otherCurrent != null){
+      if(current.data == null){
+        // check if null doesn't match
+        if(otherCurrent.data != null){
+          return false;
+        }
+      } else if(!(current.data.equals(otherCurrent.data))){
+        // check if the data doesn't match
+        return false;
+      }
+
+      current = current.link;
+      otherCurrent = otherCurrent.link;
+    }
+
+    // check if the end matches up
+    return current == null && otherCurrent == null;
+  }
+
+  public static void main(String[] args){
+    ArrayList<Character> quackOne = new ArrayList<>();
+    ArrayList<Character> quackTwo = new ArrayList<>(); // empty list
+
+    // testing insert
+    quackOne.insert('a', 0);
+    quackOne.insert('b', 1);
+    quackOne.insert('c', 2);
+    System.out.println(quackOne);
+
+    // testing remove (returns the Object value)
+    System.out.println("This should remove and return b: " + quackOne.remove(1) + ". Now the list is: " + quackOne);
+
+    // testing append
+    quackOne.append('z');
+    System.out.println(quackOne);
+
+    // testing delete (does not return a value)
+    System.out.println("This should remove the first index");
+    System.out.println("Before: " + quackOne);
+    quackOne.delete(0);
+    System.out.println("After: " + quackOne);
+
+    // testing get
+    System.out.println("Getting the data member at element 0: " + quackOne.get(0));
+
+    // testing toString
+    quackOne.toString();
+
+    // testing isEmpty
+    System.out.println("The quackTwo list is empty: " + quackTwo.isEmpty());
+
+    // testing indexOf
+    quackOne.append('d');
+    System.out.println("Our target d is in index: " + quackOne.indexOf('d'));
+
+    // testing equals
+    System.out.println("Does quackOne equals quackTwo?: " + quackOne.equals(quackTwo));
+
+    // test if we can remove from an empty list
+    System.out.println("Removing from an empty list: " + quackTwo.remove(0));
+
+    // attempting to remove past a list's size
+    System.out.println("Removing past list size: " + quackOne.remove(5));
+    System.out.println("List remains the same: " + quackOne);
+  }
+}
