@@ -1,0 +1,97 @@
+/**
+ * Queue.java
+ * 
+ * Description: This class demonstrates a queue list by inheritating from Quack.java.
+ * 
+ * PRE: None
+ * POST: None
+ * 
+ * @author Katie Chau
+ * @version February 2026
+ */
+public class Queue extends Quack{
+  /**
+   * enqueue
+   * 
+   * Description: This method will add an Object to the end of our list.
+   * 
+   * PRE: None
+   * POST: None
+   * 
+   * @param next is the Object we add to the end of our list
+   */
+  public void enqueue(Object next){
+    insert(next, 0);
+  }
+
+  /**
+   * dequeue
+   * 
+   * Description: This method will remove an Object from the front of our list.
+   * 
+   * PRE: None
+   * POST: None
+   * 
+   * @return Object at the first index of our list. Otherwise, return null if the list is empty.
+   */
+  public Object dequeue(){
+    if(isEmpty()){
+      System.out.println("Error: We cannot dequeue from an empty list.");
+      return null;
+    }
+
+    return remove(size() - 1);
+  }
+
+  /**
+   * toString
+   * 
+   * Description: This method returns a string of all the data members in our list from front to back.
+   * 
+   * PRE: None
+   * POST: None
+   * 
+   * @return String the concatenated string of our list.
+   */
+  @Override 
+  public String toString(){
+    String result = "";
+    for(int i = size() - 1; i >= 0; i--){
+      result += get(i);
+      if(i != 0){
+        result += ", ";
+      }
+    }
+
+    return result;
+  }
+
+  public static void main(String[] args){
+    Queue newQue = new Queue();
+
+    // testing enqueue
+    newQue.enqueue(3); // adds 3
+    // testing toString
+    System.out.println("Adding 3: " + newQue);
+    newQue.enqueue("tree"); // add "tree" to the end
+    System.out.println("Adding tree: " + newQue);
+
+    // testing dequeue
+    newQue.dequeue(); // returns 3 from the front of the list
+    System.out.println("First out: " + newQue);
+
+    // attempting to dequeue from an empty list
+    Queue empty = new Queue();
+    empty.dequeue(); // prints an error
+
+    System.out.println("FIFO test:");
+    Queue q = new Queue();
+    q.enqueue("a");
+    q.enqueue("b");
+    q.enqueue("c");
+
+    System.out.println("Dequeue (should be a): " + q.dequeue());
+    System.out.println("Dequeue (should be b): " + q.dequeue());
+    System.out.println("Dequeue (should be c): " + q.dequeue());
+  }
+}
