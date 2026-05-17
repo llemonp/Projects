@@ -1,0 +1,93 @@
+/**
+ * Stack.java
+ * 
+ * Description: This class demonstrates a stack list by inheriating from Quack.java.
+ * 
+ * PRE: None
+ * POST: None
+ * 
+ * @author Katie Chau
+ * @version February 2026
+ */
+public class Stack extends Quack{
+  /**
+   * push
+   * 
+   * Description: This method will insert the next Object at the top of the list.
+   * 
+   * PRE: None
+   * POST: Object is inserted at the top of the list.
+   * 
+   * @param next is the Object we want to insert.
+   */
+  public void push(Object next){
+    insert(next, 0);
+  }
+
+  /**
+   * pop
+   * 
+   * Description: This method will remove the Object at the top of our list.
+   * 
+   * PRE: None
+   * POST: Object at the top of the list is returned and removed. Otherwise, return null if the list is empty.
+   * 
+   * @return the Object at the top of our list.
+   */
+  public Object pop(){
+    if(isEmpty()){
+      System.out.println("We cannot pop from an empty list.");
+      return null;
+    }
+
+    return remove(0);
+  }
+
+  /**
+   * peek
+   * 
+   * Description: This method will return the Object at the top of Our list and leave the list unchanged.
+   * 
+   * PRE: None
+   * POST: None
+   * 
+   * @return the Object at the top of the list.
+   */
+  public Object peek(){
+    return get(0);
+  }
+
+  public static void main(String[] args){
+    Stack newStack = new Stack();
+
+    // testing push
+    newStack.push("Excercising Smiski");
+    newStack.push("Yoga Smiski");
+    newStack.push("Museum Smiski");
+    System.out.println(newStack);
+
+    // testing pop
+    System.out.println("First pop: " + newStack.pop());
+
+    // testing toString
+    System.out.println(newStack);
+
+    // testing peek
+    System.out.println("Peeking: " + newStack.peek());
+
+    // tesing if we can remove from an empty list
+    System.out.println("Pop from an empty list: ");
+    newStack.pop();
+    newStack.pop();
+    newStack.pop(); // this line will trigger an error message
+
+    System.out.println("LIFO test: Pop in reverse order");
+    Stack s = new Stack();
+    s.push("a");
+    s.push("b");
+    s.push("c");
+    System.out.println("Pop (should be c): " + s.pop());
+    System.out.println("Pop (should be b): " + s.pop());
+    System.out.println("Pop (should be a): " + s.pop());
+  }
+}
